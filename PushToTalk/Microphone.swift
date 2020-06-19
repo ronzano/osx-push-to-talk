@@ -36,7 +36,16 @@ class Microphone {
     func setupDeviceMenu(menu: NSMenu) throws {
         menu.removeAllItems()
         let devices = try? getInputDevices()
-        self.selectedInput = devices![0]
+        
+        let savedSelectedInput = UserDefaults.standard.integer(forKey: "selectedInput");
+        if let selectedInput = devices?.first(where: { (InputDevice) -> Bool in
+            InputDevice.id == savedSelectedInput
+        }) {
+            self.selectedInput = selectedInput;
+        } else {
+            self.selectedInput = devices![0]
+        }
+
         for device in devices! {
             let item = DeviceMenuItem()
             item.inputDevice = device
@@ -59,6 +68,7 @@ class Microphone {
         }
         item.state = NSControl.StateValue.on
         self.selectedInput = item.inputDevice;
+        UserDefaults.standard.set(self.selectedInput?.id, forKey: "selectedInput")
         self.status = status
     }
 }
