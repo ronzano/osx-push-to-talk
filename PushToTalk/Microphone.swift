@@ -41,9 +41,9 @@ class Microphone {
         if let selectedInput = devices?.first(where: { (InputDevice) -> Bool in
             InputDevice.id == savedSelectedInput
         }) {
-            self.selectedInput = selectedInput;
+            self.selectedInput = selectedInput
         } else {
-            self.selectedInput = devices![0]
+            self.selectedInput = devices!.first
         }
 
         for device in devices! {
